@@ -56,6 +56,8 @@ gatk GermlineCNVCaller --run-mode COHORT -L gc.filtered.interval_list  --interva
 
 
 mkdir output5
+
+
  for ((i=0; i<$((`ls $bamDir | wc -l` / 2)); i++)); do gatk PostprocessGermlineCNVCalls --model-shard-path output_dir/normal_cohort_run-model/ --sample-index $i --calls-shard-path output_dir/normal_cohort_run-calls --allosomal-contig chrX --allosomal-contig chrY --contig-ploidy-calls ploidy-calls --output-genotyped-intervals output5/sample_${i}_cohort.vcf.gz --output-genotyped-segments output5/sample_${i}_segment.cohort.vcf.gz --output-denoised-copy-ratios output5/sample_${i}_ratio.txt --java-options -DGATK_STACKTRACE_ON_USER_EXCEPTION=true; sampleName=`zcat output5/sample_${i}_cohort.vcf.gz | grep "#CHROM" | cut -f 10`; echo -e $sampleName"\tSample_"$i >> output5/sample.list; mv output5/sample_${i}_cohort.vcf.gz output5/${sampleName}_cohort.vcf.gz; mv output5/sample_${i}_cohort.vcf.gz.tbi output5/${sampleName}_cohort.vcf.gz.tbi; mv output5/sample_${i}_segment.cohort.vcf.gz output5/${sampleName}_segment.cohort.vcf.gz; mv output5/sample_${i}_segment.cohort.vcf.gz.tbi output5/${sampleName}_segment.cohort.vcf.gz.tbi; mv output5/sample_${i}_ratio.txt output5/${sampleName}_ratio.txt; done
  
 
